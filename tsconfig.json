@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
-    "target": "ES2020",
-    "module": "CommonJS",
+    "target": "es2022",
+    "module": "es2022",
     "rootDir": "./",
     "outDir": "./dist",
     "strict": true,
     "sourceMap": false
   },
-  "include": ["SimuChat.ts", "./src"],
+  "include": ["src/SimuChat.ts", "./src"],
   "exclude": []
 }

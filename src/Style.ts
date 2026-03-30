@@ -1,0 +1,1 @@
+export function AddStyle(type: string, typeStyle: string): void {}

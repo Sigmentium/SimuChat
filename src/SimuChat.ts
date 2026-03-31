@@ -4,6 +4,7 @@
 import { AddMessageCompanion } from './Companion';
 import { AddMessageEgo, AddSampleAnswerEgo } from './Ego';
 import { AddStyle } from './Style';
+import { AnimTyping, StopAnimTyping } from './Animations';
 import './SimuChat.css';
 
 export type Chat = {
@@ -22,7 +23,12 @@ export class SimuChat {
 
     private RenderMessages(): void {
         const Chat = document.getElementById('Chat');
-        if (!Chat) return;
+        if (!Chat) {
+            console.error('Отсутствует элемент Chat для рендеринга');
+            return;
+        }
+
+        Chat.innerHTML = "";
 
         const Data = localStorage.getItem('Messages');
         if (!Data) return;
@@ -110,6 +116,9 @@ export class SimuChat {
     AddMessageCompanion = AddMessageCompanion;
     AddMessageEgo = AddMessageEgo;
     AddSampleAnswerEgo = AddSampleAnswerEgo;
+
+    AnimTyping = AnimTyping;
+    StopAnimTyping = StopAnimTyping;
 
     Delay(duration: number) {
         return new Promise(resolve => setTimeout(resolve, duration));

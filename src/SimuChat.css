@@ -142,9 +142,20 @@ body {
   background-color: #f0f0f0;
 }
 
-@media (min-width: 700px) {
-  body {
-    align-items: flex-start;
-    margin: 0;
-  }
+.typing {
+  font-size: 13px;
+  color: #666;
+  padding-top: 10px;
+}
+
+.dots::after {
+  content: "";
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0% { content: ""; }
+  33% { content: "."; }
+  66% { content: ".."; }
+  100% { content: "..."; }
 }

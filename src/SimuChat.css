@@ -1,14 +1,38 @@
 @import url('https://fonts.googleapis.com/css2?family=Unbounded:wght@200..900&display=swap');
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  background-color: #f0f2f5;
+}
+
+#Main,
+#Main * {
+  font-family: "Unbounded", sans-serif;
+}
+
 #Main {
   width: 100%;
   max-width: 500px;
-  height: 100vh;
+  height: 100%;
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
   border-radius: 12px;
-  font-family: "Unbounded", sans-serif;
   font-optical-sizing: auto;
   font-weight: 400;
   font-style: normal;
@@ -41,6 +65,7 @@
   flex-direction: column;
   gap: 4px;
   overflow-y: auto;
+  min-height: 0;
 }
 
 .message {
@@ -119,10 +144,7 @@
 
 @media (min-width: 700px) {
   body {
-    display: flex;
-    justify-content: center;
     align-items: flex-start;
-    background-color: #f0f2f5;
     margin: 0;
   }
 }

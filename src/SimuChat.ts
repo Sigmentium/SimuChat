@@ -4,11 +4,66 @@
 import { AddStyle } from './Style';
 import './SimuChat.css';
 
+type Chat = {
+    text: string;
+    type: "incoming" | "outgoing";
+    time: string;
+};
+
 export class SimuChat {
+    private messages: Chat[];
+    private StepIndex = 0;
+    private StepKey = "SimuChatStep";
     private egoName: string;
     private companionName: string;
 
+    private RenderMessages(): void {
+        const Chat = document.getElementById('Chat');
+        if (!Chat) return;
+
+        const Data = localStorage.getItem('Messages');
+        if (!Data) return;
+
+        this.messages = JSON.parse(Data);
+
+        this.messages.forEach((msg) => {
+            Chat.innerHTML += `
+            <div class="message ${msg.type}">
+                <div class="message-content">
+                    <div class="message-text">${msg.text}</div>
+                    <div class="message-meta">
+                        <span class="sender-name">${msg.type === "incoming" ? this.companionName : this.egoName}</span>
+                        <span class="time">${msg.time}</span>
+                    </div>
+                </div>
+            </div>`;
+        });
+
+        setTimeout(() => this.ScrollToBottom(), 0);
+    }
+
+    private ScrollToBottom(): void {
+        const Chat = document.getElementById('Chat');
+        if (!Chat) return;
+
+        Chat.scrollTop = Chat.scrollHeight;
+    }
+
+    public SaveMessages(): void {
+        localStorage.setItem('Messages', JSON.stringify(this.messages));
+    }
+
+    private SaveStep() {
+        localStorage.setItem(this.StepKey, String(this.StepIndex));
+    }
+
+    private LoadStep() {
+        const Step = localStorage.getItem(this.StepKey);
+        if (Step) this.StepIndex = Number(Step);
+    }
+
     constructor(egoName: string, companionName: string, style: string, typeStyle: string) {
+        this.messages = [];
         this.egoName = egoName;
         this.companionName = companionName;
 
@@ -35,66 +90,107 @@ export class SimuChat {
         }
 
         AddStyle(style, typeStyle);
+
+        this.RenderMessages();
+        this.LoadStep();
+        setTimeout(() => this.ScrollToBottom(), 0);
+    }
+
+    async run(steps: (() => Promise<void> | void)[]) {
+        for (let i = this.StepIndex; i < steps.length; i++) {
+            await steps[i]();
+            this.StepIndex++;
+            this.SaveStep();
+        }
     }
 
     AddMessageCompanion(message: string): void {
         const Chat = document.getElementById('Chat');
 
+        const msg: Chat = {
+            text: message,
+            type: "incoming",
+            time: GetCurrentTime()
+        };
+
+        this.messages.push(msg);
+        this.SaveMessages();
+
         if (Chat) {
-            Chat.innerHTML += `<br>
+            Chat.innerHTML += `
             <div class="message incoming">
                 <div class="message-content">
                     <div class="message-text">${message}</div>
                     <div class="message-meta">
                         <span class="sender-name">${this.companionName}</span>
-                        <span class="time">${GetCurrentTime()}</span>
+                        <span class="time">${msg.time}</span>
                     </div>
                 </div>
             </div>`;
+
+            setTimeout(() => this.ScrollToBottom(), 0);
         }
         else {
-            console.error('Отсутствует элемент Main для рендеринга');
+            console.error('Отсутствует элемент Chat для рендеринга');
         }
     }
 
     AddMessageEgo(message: string): void {
         const Chat = document.getElementById('Chat');
 
+        const msg: Chat = {
+            text: message,
+            type: "outgoing",
+            time: GetCurrentTime()
+        };
+
+        this.messages.push(msg);
+        this.SaveMessages();
+
         if (Chat) {
-            Chat.innerHTML += `<br>
+            Chat.innerHTML += `
             <div class="message outgoing">
                 <div class="message-content">
                     <div class="message-text">${message}</div>
                     <div class="message-meta">
                         <span class="sender-name">${this.egoName}</span>
-                        <span class="time">${GetCurrentTime()}</span>
+                        <span class="time">${msg.time}</span>
                     </div>
                 </div>
             </div>`;
+
+            setTimeout(() => this.ScrollToBottom(), 0);
         }
         else {
-            console.error('Отсутствует элемент Main для рендеринга');
+            console.error('Отсутствует элемент Chat для рендеринга');
         }
     }
 
-    AddSampleAnswerEgo(...answers: string[]): void {
-        const Choices = document.getElementById('Choices');
+    AddSampleAnswerEgo(...answers: string[]): Promise<string> {
+        return new Promise((resolve) => {
+            const Choices = document.getElementById('Choices');
+            
+            if (Choices) {
+                Choices.innerHTML = "";
 
-        if (Choices) {
-            answers.forEach((answer) => {
-                Choices.innerHTML += `<button class="choice-btn">${answer}</button>`;
-            });
+                answers.forEach((answer) => {
+                    const btn = document.createElement("button");
+                    btn.className = "choice-btn";
+                    btn.textContent = answer;
 
-            document.querySelectorAll(".choice-btn").forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    this.AddMessageEgo(btn.textContent);
-                    btn.parentElement?.remove();
+                    btn.addEventListener("click", () => {
+                        this.AddMessageEgo(answer);
+                        Choices.innerHTML = "";
+                        resolve(answer);
+                    });
+
+                    Choices.appendChild(btn);
                 });
-            });
-        }
-        else {
-            console.error('Отсутствует элемент Main для рендеринга');
-        }
+            }
+            else {
+                console.error('Отсутствует элемент Choices для рендеринга');
+            }
+        });
     }
 }
 

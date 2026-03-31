@@ -14,8 +14,9 @@ export type Chat = {
 
 export class SimuChat {
     public messages: Chat[];
-    private StepIndex = 0;
-    private StepKey = "SimuChatStep";
+    private stepIndex = 0;
+    private stepKey = "SimuChatStep";
+    public lastChoice: string | null = null;
     public egoName: string;
     public companionName: string;
 
@@ -55,13 +56,13 @@ export class SimuChat {
         localStorage.setItem('Messages', JSON.stringify(this.messages));
     }
 
-    private SaveStep() {
-        localStorage.setItem(this.StepKey, String(this.StepIndex));
+    private SaveStep(): void {
+        localStorage.setItem(this.stepKey, String(this.stepIndex));
     }
 
-    private LoadStep() {
-        const Step = localStorage.getItem(this.StepKey);
-        if (Step) this.StepIndex = Number(Step);
+    private LoadStep(): void {
+        const Step = localStorage.getItem(this.stepKey);
+        if (Step) this.stepIndex = Number(Step);
     }
 
     constructor(egoName: string, companionName: string, style: string, typeStyle: string) {
@@ -99,9 +100,9 @@ export class SimuChat {
     }
 
     async run(steps: (() => Promise<void> | void)[]) {
-        for (let i = this.StepIndex; i < steps.length; i++) {
+        for (let i = this.stepIndex; i < steps.length; i++) {
             await steps[i]();
-            this.StepIndex++;
+            this.stepIndex++;
             this.SaveStep();
         }
     }
@@ -109,6 +110,10 @@ export class SimuChat {
     AddMessageCompanion = AddMessageCompanion;
     AddMessageEgo = AddMessageEgo;
     AddSampleAnswerEgo = AddSampleAnswerEgo;
+
+    Delay(duration: number) {
+        return new Promise(resolve => setTimeout(resolve, duration));
+    }
 }
 
 export function GetCurrentTime() {

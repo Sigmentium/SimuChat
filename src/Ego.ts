@@ -45,6 +45,7 @@ export function AddSampleAnswerEgo(this: SimuChat, ...answers: string[]): Promis
                 btn.textContent = answer;
 
                 btn.addEventListener("click", () => {
+                    this.lastChoice = answer;
                     this.AddMessageEgo(answer);
                     Choices.innerHTML = "";
                     resolve(answer);

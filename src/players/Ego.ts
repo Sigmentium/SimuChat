@@ -1,5 +1,5 @@
-import { GetCurrentTime } from "./SimuChat";
-import type { SimuChat, Chat } from "./SimuChat";
+import { GetCurrentTime } from "../SimuChat";
+import type { SimuChat, Chat } from "../SimuChat";
 
 export function AddMessageEgo(this: SimuChat, message: string): void {
     const Chat = document.getElementById('Chat');

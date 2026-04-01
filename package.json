@@ -1,18 +1,18 @@
 {
   "name": "simuchat",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "SimuChat is a lightweight TypeScript library for building interactive chat simulations and dialogue-based experiences directly in the browser",
   "keywords": ["SimuChat", "Messenger", "Chat", "Simulation", "Browser", "TypeScript", "JavaScript"],
-  "homepage": "",
+  "homepage": "https://github.com/Sigmentium/SimuChat",
   "license": "MIT",
   "files": ["dist"],
   "main": "dist/SimuChat.js",
   "bugs": {
-    "url": "https://",
+    "url": "https://github.com/Sigmentium/SimuChat/issues",
     "email": "sigmentiumplay@gmail.com"
   },
   "scripts": {
-    "build": "npx esbuild index.ts --bundle --outfile=dist/SimuChat.js --platform=browser --format=iife --global-name=SimuChat --loader:.css=text",
+    "build": "npx esbuild index.ts --bundle --outfile=dist/SimuChat.js --platform=browser --format=iife --loader:.css=text",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {

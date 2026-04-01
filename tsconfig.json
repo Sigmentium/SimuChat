@@ -5,8 +5,8 @@
     "rootDir": "./",
     "outDir": "./dist",
     "strict": true,
-    "sourceMap": false
+    "declaration": true
   },
-  "include": ["src/SimuChat.ts", "./src"],
+  "include": ["./src"],
   "exclude": []
 }

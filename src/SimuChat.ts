@@ -1,11 +1,11 @@
 // 2026
 // © Sigmentium
 
-import { AddMessageCompanion } from './Companion';
-import { AddMessageEgo, AddSampleAnswerEgo } from './Ego';
+import { AddMessageCompanion } from './players/Companion';
+import { AddMessageEgo, AddSampleAnswerEgo } from './players/Ego';
 import { AddStyle } from './Style';
 import { AnimTyping, StopAnimTyping } from './Animations';
-import './SimuChat.css';
+import css from './SimuChat.css';
 
 export type Chat = {
     text: string;
@@ -76,10 +76,9 @@ export class SimuChat {
         this.egoName = egoName;
         this.companionName = companionName;
 
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = './SimuChat.css';
-        document.head.appendChild(link);
+        const StyleCSS = document.createElement('style');
+        StyleCSS.textContent = css;
+        document.head.appendChild(StyleCSS);
 
         const Main = document.getElementById('Main');
 

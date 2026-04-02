@@ -6,14 +6,6 @@ It provides a messenger-style UI with support for dynamic conversations, user ch
 
 ---
 
-## Getting started
-
-Include SimuChat via CDN:
-
-`<script src="https://cdn.jsdelivr.net/npm/simuchat/dist/SimuChat.js"></script>`
-
----
-
 ## ✨ Features
 
 - 💬 Messenger-style UI rendering
@@ -34,6 +26,16 @@ Include SimuChat via CDN:
 - Dialogue systems  
 - Chat simulations  
 - Web mini-games (e.g. Yandex Games)
+
+---
+
+## Getting started
+
+Include SimuChat via CDN:
+
+```JavaScript
+<script src="https://cdn.jsdelivr.net/npm/simuchat/dist/SimuChat.js"></script>
+```
 
 ---
 
@@ -75,4 +77,5 @@ Include SimuChat via CDN:
             ]);
         </script>
     </body>
-</html>```
+</html>
+```

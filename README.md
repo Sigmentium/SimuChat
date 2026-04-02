@@ -39,6 +39,10 @@ Include SimuChat via CDN:
 
 ---
 
+## [Documentation](docs/SimuChat.md)
+
+---
+
 ## 🧩 Example
 
 ```JavaScript
